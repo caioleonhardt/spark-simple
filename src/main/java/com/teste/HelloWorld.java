@@ -18,9 +18,16 @@ public class HelloWorld {
 	private HelloApi helloApi;
 	
     public void main(@Observes ContainerInitialized container) {
-    	
+
 		path("/api", () -> {
 			get("/hello", helloApi::hello, gson::toJson);			 
 		});
+
+        after((req, res) -> {
+            res.header("Server", "BigServer 1.0");
+            res.header("Content-Encoding", "gzip");
+            
+            res.type("application/json");
+        });
     }
 }
